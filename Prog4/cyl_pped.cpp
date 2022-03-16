@@ -1,113 +1,95 @@
 #include<stdio.h>
 #include<gl/glut.h>
-
-void ppedDisplay() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1.0, 0.0, 0.0, 1.0);
-	glColor3f(0.0, 0.0, 1.0);
-	int x1 = 100, y1 = 100, x2 = 300, y2 = 200;
-	for(int i = 0; i < 45; i+=1) {
-		glBegin(GL_LINE_LOOP);
-		glVertex2f(x1+i, y1+i);
-		glVertex2f(x1 + i, y2 + i);
-		glVertex2f(x2 + i, y2 + i);
-		glVertex2f(x2 + i, y1 + i);
-		glEnd();
-	}
-	glBegin(GL_QUADS);
-		glVertex2f(x1, y1);
-		glVertex2f(x1, y2 );
-		glVertex2f(x2, y2);
-		glVertex2f(x2, y1);
-		glEnd();
-		
-	/*for(int i = 0; i >=0; i+=1) {
-		if (x1 + i > x2 - i || y1 + i > y2 - i)
-			break;
-		glBegin(GL_LINE_LOOP);
-		glVertex2f(x1 + i, y1 + i);
-		glVertex2f(x1 + i, y2 - i);
-		glVertex2f(x2 - i, y2 - i);
-		glVertex2f(x2 - i, y1 + i);
-		glEnd();
-	}*/
-	glFlush();
-}
-void draw_pixel(GLint cx, GLint cy)
-{
-	
-	glBegin(GL_POINTS);
-	glVertex2i(cx, cy);
+void rect(int x, int y, int r, int h) {
+	glBegin(GL_LINE_LOOP);
+	glVertex2d(x,y);
+	glVertex2d(x+r, y);
+	glVertex2d(x+r, y+h);
+	glVertex2d(x, y+h);
 	glEnd();
 }
-void plotpixels(GLint h, GLint k, GLint x, GLint y)
-{
-	draw_pixel(x + h, y + k);
-	draw_pixel(-x + h, y + k);
-	draw_pixel(x + h, -y + k);
-	draw_pixel(-x + h, -y + k);
-	draw_pixel(y + h, x + k);
-	draw_pixel(-y + h, x + k);
-	draw_pixel(y + h, -x + k);
-	draw_pixel(-y + h, -x + k);
+void plot(int h, int k, int x, int y) {
+	glBegin(GL_POINTS);
+	glVertex2d(x + h, y + k);
+	glVertex2d(-x + h, y + k);
+	glVertex2d(-x + h, -y + k);
+	glVertex2d(x + h, -y + k);
+	glVertex2d(y + h, x + k);
+	glVertex2d(-y + h, x + k);
+	glVertex2d(y + h, -x + k);
+	glVertex2d(-y + h, -x + k);
+	glEnd();
 }
-void drawCircle(GLint x, GLint y, GLint r) {
-	int x1 = 0, y1 = r, d = 1-r;
-	while (y1 > x1) {
-		plotpixels(x, y, x1, y1);
-		if (d < 0) {
-			d += 2 * x1 + 3;
+void bres(int h, int k, int r) {
+	int x = 0, y = r, e = 1 - r;
+	while (y > x) {
+		plot(h,k,x, y);
+		if (e < 0) {
+			e += 2 * x + 3;
 		}
 		else {
-			d += 2 * (x1 - y1) + 5;
-			--y1;
+			e += 2 * (x - y) + 5;
+			y--;
 		}
-		++x1;
+		x++;
 	}
-	plotpixels(x, y, x1, y1);
 	glFlush();
+}
+void display1() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0, 0, 0, 1);
+	int x = 250, y = 250, r = 100, h=100, i=0;
+	for (i = 0; i < h; i += 5) {
+		bres(x , y + i, r);
+	}
+	y = y + i;
+	for (i = 0; i <= r; i += 2) {
+		bres(x, y , r-i);
+	}
+	glFlush();
+	//glutPostRedisplay();
 }
 
-void cylinderDisplay() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1.0, 0.0, 0.0, 1.0);
-	glColor3f(0.0, 1.0, 0.0);
-	GLint x1 = 150, y1 = 150, r = 100;
-	for (int i = 0; i < 100; i+=1) {
-		drawCircle(x1, y1+i, r);
+void display2() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0, 0, 0, 1);
+	int x = 250, y = 250, r = 100, h = 50, i = 0;
+	for (i = 0; i < h; i += 3) {
+		rect(x+i, y + i, r, h);
 	}
-	/*for (int i = 0; i < r; i+=1)
-		drawCircle(x1, y1, r - i);
-	for (int i = 0; i < r; i += 1)
-		drawCircle(x1, y1+99, r - i);*/
+	y = y + i; x = x + i;
+	glBegin(GL_QUADS);
+	glVertex2d(x, y);
+	glVertex2d(x + 100, y);
+	glVertex2d(x + 100, y + 50);
+	glVertex2d(x, y + 50);
+	glEnd();
 	glFlush();
+	//glutPostRedisplay();
 }
-void cpreshape(int w, int h) {
-	glViewport(0, 0, w, h);
+void reshape(int w, int h) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	if (w <= h)
-		glOrtho(-2, 2, -2 * (float)h / (float)w, 2 * (float)h / (float)w, -h, h);
-	else
-		glOrtho(-2 * (float)w / (float)h, 2 * (float)w / (float)h, -2, 2, -w, w);
+	glOrtho(0, 500, 0, 500, 0, 500);
 	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glutPostRedisplay();
 }
-int main(int argc, char** argv) {
+void main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
-	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(500, 500);
+	glutInitWindowPosition(0, 0);
+	glOrtho(0, 500, 0, 500, 0, 500);
 
-	int id1 = glutCreateWindow("Cylinder");
-	glutDisplayFunc(cylinderDisplay);
-	gluOrtho2D(0, 500, 0, 500);
-	glutReshapeFunc(cpreshape);
+	glutCreateWindow("Cylinder");
+	glutDisplayFunc(display1);
+	glutReshapeFunc(reshape);
+	
 
-	int id2 = glutCreateWindow("Pped");
-	glutDisplayFunc(ppedDisplay);
-	gluOrtho2D(0, 500, 0, 500);
+	glutCreateWindow("Parallelopiped");
+	glutDisplayFunc(display2);
+	glutReshapeFunc(reshape);
 
-	glutReshapeFunc(cpreshape);
 	glutMainLoop();
-	return 0;
 }
