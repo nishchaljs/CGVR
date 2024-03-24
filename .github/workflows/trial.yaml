@@ -1,7 +1,7 @@
 name: GitHub Actions Demo
 on: [pull_request]
 env:
-  GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
+  GITHUB_PR_NUMBER: ${{github.event.pull_request.diff_url}}
 jobs:
   prJob:    
     name: Print event
