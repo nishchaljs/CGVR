@@ -1,6 +1,6 @@
 from github import Github
 
-YOUR_GITHUB_TOKEN = "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"
+YOUR_GITHUB_TOKEN = "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"
 
 g = Github(YOUR_GITHUB_TOKEN)
 
