@@ -1,11 +1,11 @@
 from github import Github
 
-YOUR_GITHUB_TOKEN = "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"
+YOUR_GITHUB_TOKEN = os.environ['INPUT_SECRET']
 
 g = Github(YOUR_GITHUB_TOKEN)
 
 repo = g.get_repo("nishchaljs/CGVR")
-pull_req_number = os.environ['PULL_REQ_NUMBER']
+pull_req_number = os.environ['INPUT_PULLREQ']
 pull_request = repo.get_pull(number=pull_req_number)
 commit = repo.get_commit(sha=pull_request.head.sha)
 
