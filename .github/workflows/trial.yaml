@@ -1,7 +1,11 @@
 name: GitHub Actions Demo
 on: [pull_request]
+env:
+  GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
 jobs:
-  Explore-GitHub-Actions:
+  prJob:    
+    name: Print event
     runs-on: ubuntu-latest
     steps:
-    - run: echo "PRInfo ${{ github.event.diff_url}}"
+      - run: |
+          echo "$GITHUB_PR_NUMBER"
