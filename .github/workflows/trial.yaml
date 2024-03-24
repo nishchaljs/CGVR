@@ -23,4 +23,4 @@ jobs:
             main
       - name: execute py script # run file
         run: |
-          INPUT_STORE=$GITHUB_PR_NUMBER python3 Test.py
+          INPUT_STORE=$PULL_REQ_NUMBER python3 Test.py
