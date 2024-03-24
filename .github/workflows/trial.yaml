@@ -19,7 +19,7 @@ jobs:
           cache: 'pip' # caching pip dependencies
           ref: # branch
             main
-      - run: pip install --user PyGithub
+      - run: pip install -r requirements.txt
           
       - name: execute py script # run file
         run: |
