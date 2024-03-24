@@ -16,10 +16,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8 #install the python needed
-          run: |
-            pip install --user --no-build-isolation PyGithub
+          cache: 'pip' # caching pip dependencies
           ref: # branch
             main
+      - run: pip install --user PyGithub
+          
       - name: execute py script # run file
         run: |
           INPUT_STORE=$PULL_REQ_NUMBER python3 Test.py
