@@ -9,3 +9,13 @@ jobs:
     steps:
       - run: |
           echo "$GITHUB_PR_NUMBER"
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: nbaztec/add-pr-review-comment@v1
+        with:
+          message: |
+            [{"path":".github/workflows/trial.yaml","line":10,"text":"something was deleted","side":"RIGHT"}]
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default
