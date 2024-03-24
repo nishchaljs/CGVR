@@ -5,7 +5,8 @@ YOUR_GITHUB_TOKEN = "github_pat_11AKLW2ZI0HRKosxk2buwu_Hz1CtxuUJfV32At5b0fPItRh9
 g = Github(YOUR_GITHUB_TOKEN)
 
 repo = g.get_repo("nishchaljs/CGVR")
-pull_request = repo.get_pull(number=input_variable = os.environ['PULL_REQ_NUMBER'])
+pull_req_number = os.environ['PULL_REQ_NUMBER']
+pull_request = repo.get_pull(number=input_variable = pull_req_number)
 commit = repo.get_commit(sha=pull_request.head.sha)
 
 # Print the diff
