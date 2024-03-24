@@ -10,3 +10,17 @@ jobs:
     steps:
       - run: |
           echo "$GITHUB_PR_NUMBER and $GITHUB_COMMIT_ID"
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content to github runner.
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8 #install the python needed
+          run: |
+            python -m pip install --upgrade pip
+            pip install flake8 pytest
+          ref: # branch
+            master
+      - name: execute py script # run file
+        run: |
+          python print_name.py
