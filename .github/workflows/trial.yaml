@@ -1,7 +1,7 @@
 name: GitHub Actions Demo
 on: [pull_request]
 env:
-  GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
+  PULL_REQ_NUMBER: ${{github.event.pull_request.number}}
   GITHUB_COMMIT_ID: ${{github.event.pull_request.head.sha}}
 jobs:
   prJob:    
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "$GITHUB_PR_NUMBER and $GITHUB_COMMIT_ID"
+          echo "$PULL_REQ_NUMBER and $GITHUB_COMMIT_ID"
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content to github runner.
       - name: setup python
